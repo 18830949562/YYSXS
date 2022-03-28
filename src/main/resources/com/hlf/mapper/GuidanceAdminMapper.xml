@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlf.mapper.GuidanceAdminMapper">
+
+    <select id="getLeaveApproval" resultType="com.hlf.vo.LeaveInfo">
+        SELECT
+        lei.leave_id,
+        lei.leave_name,
+        lei.leave_start_time,
+        lei.leave_end_time,
+        lei.leave_reason,
+        de.department_name,
+        doc.doctor_name,
+        sti.status_name
+        FROM
+        leave_info lei
+        LEFT JOIN department de ON lei.leave_department = de.department_id
+        LEFT JOIN doctor doc ON lei.leave_doctor = doc.doctor_id
+        LEFT JOIN status_info sti ON lei.leave_status = sti.status_id
+        where 1 = 1 AND lei.leave_status = '1'
+        <if test="userRole != null">
+            AND doc.doctor_id = #{userRole.roleId}
+        </if>
+    </select>
+
+    <select id="getFeedback" resultType="com.hlf.pojo.Feedback">
+        SELECT
+        fei.feedback_id,
+        fei.feedback_name,
+        fei.feedback_content,
+        fei.feedback_time
+        FROM
+        feedback_info fei ORDER BY fei.feedback_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hlf.mapper.LoginMapper">
+
+    <!--根据标签返回推荐商品信息-->
+    <select id="getMenuInfo" resultType="com.hlf.vo.Menu">
+       SELECT
+	    me.*
+       FROM
+	    user_info usi
+       LEFT JOIN role re ON usi.role = re.role_id
+       LEFT JOIN role_relation rer ON re.role_relation = rer.role_id
+       LEFT JOIN menu me ON rer.menu_id = me.id
+       WHERE
+	    usi.user_name = #{userName};
+    </select>
+
+    <select id="getMenuInfos" resultType="com.hlf.vo.Menu">
+       SELECT * FROM menu where pid != 0;
+    </select>
+
+
+</mapper>

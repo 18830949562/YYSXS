@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlf.mapper.BasicInfoMapper">
+
+    <!--查询医生-->
+    <select id="getDoctor" resultType="com.hlf.pojo.Doctor">
+           SELECT
+            doc.doctor_id,
+            doc.doctor_name,
+            doc.doctor_age,
+            doc.doctor_sex,
+            de.department_name,
+            doc.doctor_title
+           FROM
+            doctor doc
+           LEFT JOIN department de ON doc.doctor_department = de.department_id;
+    </select>
+
+    <!--查询实习生-->
+    <select id="getInternship" resultType="com.hlf.pojo.Internship">
+           SELECT
+            inte.internship_id,
+            inte.internship_name,
+            inte.internship_age,
+            inte.internship_sex,
+            doc.doctor_name,
+            de.department_name,
+            inte.internship_education
+           FROM
+	        internship inte
+           LEFT JOIN doctor doc ON inte.internship_doctor = doc.doctor_id
+           LEFT JOIN department de ON doc.doctor_department = de.department_id;
+    </select>
+</mapper>

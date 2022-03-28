@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlf.mapper.InternshipDailyMapper">
+
+    <!--查询实习记录-->
+    <select id="getInternshipRecord" resultType="com.hlf.pojo.Record">
+           SELECT
+            inter.id,
+            inter.internship_name,
+            inter.internship_time,
+            de.department_name,
+            intee.type_name
+           FROM
+	        internship_record inter
+           LEFT JOIN department de ON inter.internship_department = de.department_id
+           LEFT JOIN internship_type intee ON inter.internship_type = intee.type_id;
+    </select>
+
+    <!--查询实习信息-->
+    <select id="getInternshipInfo" resultType="com.hlf.pojo.InternshipInfo">
+           SELECT
+            intei.id,
+            intei.internship_name,
+            intei.internship_info,
+            intei.internship_time,
+            de.department_name
+           FROM
+	        internship_info intei
+           LEFT JOIN department de ON intei.internship_department = de.department_id;
+    </select>
+
+    <insert id="addLeave">
+        INSERT INTO leave_info(leave_id,
+            leave_name,
+            leave_start_time,
+            leave_end_time,
+            leave_reason,
+            leave_department,
+            leave_doctor,
+            leave_status)
+        VALUES
+	    (null,#{leave.leaveName},
+	    #{leave.leaveStartTime},
+	    #{leave.leaveEndTime},
+	    #{leave.leaveReason},
+	    #{leave.leaveDepartment},
+	    #{leave.leaveDoctor},
+	    #{leave.leaveStatus});
+    </insert>
+
+    <select id="getUserInfos" resultType="com.hlf.vo.UserRole">
+        SELECT
+            usi.user_name,
+            usi.role_id,
+            re.role_name,
+            re.role_relation,
+        FROM
+            user_info usi
+        LEFT JOIN role re ON usi.role = re.role_id
+        WHERE
+            usi.user_name = #{userName};
+    </select>
+
+    <select id="getLeave" resultType="com.hlf.vo.LeaveInfo">
+           SELECT
+	        lei.leave_id,
+	        lei.leave_name,
+	        lei.leave_start_time,
+	        lei.leave_end_time,
+	        lei.leave_reason,
+	        de.department_name,
+	        doc.doctor_name,
+	        sti.status_name
+           FROM
+	        leave_info lei
+           LEFT JOIN department de ON lei.leave_department = de.department_id
+           LEFT JOIN doctor doc ON lei.leave_doctor = doc.doctor_id
+           LEFT JOIN status_info sti ON lei.leave_status = sti.status_id
+           where 1 = 1 AND lei.leave_status = '1'
+            <if test="userRole != null">
+                AND leave_name = #{userRole.userName}
+            </if>
+    </select>
+
+    <insert id="feedbackApply">
+        INSERT INTO feedback_info(feedback_id,
+            feedback_name,
+            feedback_content,
+            feedback_time)
+        VALUES
+	    (null,#{feedback.feedbackName},
+	    #{feedback.feedbackContent},
+	    #{feedback.feedbackTime});
+    </insert>
+
+</mapper>

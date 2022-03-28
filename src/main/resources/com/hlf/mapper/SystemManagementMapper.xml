@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hlf.mapper.SystemManagementMapper">
+
+    <select id="setUpDoc" resultType="com.hlf.vo.UserInfo">
+        SELECT
+	        usi.id,
+	        usi.user_name,
+	        usi.password,
+	        doc.doctor_name,
+	        dep.department_name
+        FROM
+	        user_info usi
+        LEFT JOIN doctor doc ON usi.role_id = doc.doctor_id
+        LEFT JOIN department dep ON doc.doctor_department = dep.department_id
+        WHERE usi.role = '2'
+    </select>
+
+    <select id="setUpInte" resultType="com.hlf.vo.UserInfo">
+        SELECT
+	        usi.id,
+	        usi.user_name,
+	        usi.password,
+	        inte.internship_name doctor_name,
+	        dep.department_name
+        FROM
+	        user_info usi
+        LEFT JOIN internship inte ON usi.role_id = inte.internship_id
+        LEFT JOIN doctor doc ON inte.internship_doctor = doc.doctor_id
+        LEFT JOIN department dep ON doc.doctor_department = dep.department_id
+        WHERE usi.role = '3'
+    </select>
+
+    <insert id="test" parameterType="com.hlf.pojo.Doctor">
+        insert into internship_info (id,internship_name, internship_info,
+      internship_time, internship_department)
+    values
+        <foreach collection="dosList" item="dos" separator=",">
+            (null,#{dos.doctorSex,jdbcType=VARCHAR},#{dos.doctorAge,jdbcType=VARCHAR},
+            now(),0)
+        </foreach>
+    </insert>
+
+    <update id="updateTest">
+        update internship_info
+        <set>
+            <if test="dos.DOCTOR_SEX != null">internship_info=#{dos.DOCTOR_SEX},</if>
+            internship_time=now()
+        </set>
+        where id = #{dos.doctorId}
+    </update>
+
+
+</mapper>
