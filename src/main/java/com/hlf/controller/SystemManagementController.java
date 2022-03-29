@@ -1,7 +1,5 @@
 package com.hlf.controller;
 
-import com.hlf.pojo.Doctor;
-import com.hlf.pojo.InternshipInfo;
 import com.hlf.pojo.Notice;
 import com.hlf.service.systemmanagement.SystemManagementService;
 import com.hlf.vo.Dos;
@@ -59,24 +57,6 @@ public class SystemManagementController {
         return resultModel;
     }
 
-    @PostMapping(value = "/tests")
-    public ResultModel<Object> tests(){
-        long startTime = System.currentTimeMillis();
-        ResultModel<Object> resultModel = new ResultModel<>();
-        try {
-
-            Dos dos = new Dos();
-            dos.setDoctorId(1);
-            dos.setDOCTOR_SEX("传球");
-
-            systemManagementService.updateTest(dos);
-        }catch (Exception e){
-            log.info(e.getMessage(),e);
-            resultModel.buildMsg("-1","创建推送任务失败");
-        }
-        log.warn("接口耗费时间：" + (System.currentTimeMillis() - startTime) + "ms");
-        return resultModel;
-    }
 
 
 }

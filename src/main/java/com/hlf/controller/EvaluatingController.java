@@ -26,9 +26,25 @@ public class EvaluatingController {
     @Autowired
     private EvaluatingService evaluatingService;
 
-    //分配情况
+    //实习请假情况
     @PostMapping("/getDistribution")
     public ResultModel<Object> getDistribution(){
+        ResultModel<Object> ResultModel = new ResultModel<>();
+
+        return ResultModel;
+    }
+
+    //实习考勤情况
+    @PostMapping("/getSignIn")
+    public ResultModel<Object> getSignIn(){
+        ResultModel<Object> ResultModel = new ResultModel<>();
+
+        return ResultModel;
+    }
+
+    //实习阶段评测
+    @PostMapping("/getEvaluation")
+    public ResultModel<Object> getEvaluation(){
         ResultModel<Object> ResultModel = new ResultModel<>();
 
         return ResultModel;
